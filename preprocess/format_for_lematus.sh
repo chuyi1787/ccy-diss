@@ -1,7 +1,7 @@
 #!/bin/bash
 
 UD_directory=selectedUDT-v2.1 #change for other versions
-languages="English" # list of languages to process
+languages="English Arabic Turkish Spanish" # list of languages to process
 
 mkdir -p ../data
 
