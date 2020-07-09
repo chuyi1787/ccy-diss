@@ -1,6 +1,6 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 
-type=bpe
+type=500-bpe-20-context
 languages="English Arabic Turkish Spanish"
 
 batch_size=60
