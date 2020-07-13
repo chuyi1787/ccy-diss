@@ -1,9 +1,11 @@
 #!/bin/bash
 
+merge_N=$1 #500
+n_context=$2 #20
+
 UD_directory=selectedUDT-v2.1 #change for other versions
 languages="English Arabic Turkish Spanish" # list of languages to process
-merge_N=500
-n_context=20
+
 
 mkdir -p ../data
 
