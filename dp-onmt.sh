@@ -1,6 +1,6 @@
 #!/bin/bash
 
-type=500-bpe-20-context #20-char-context
+type=$1 #500-bpe-20-context #20-char-context
 languages="English Arabic Turkish Spanish"
 
 mkdir -p ./models

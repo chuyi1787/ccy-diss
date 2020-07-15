@@ -5,7 +5,7 @@ languages="English Arabic Turkish Spanish" # list of languages to process
 
 mkdir -p ../data
 
-N=( 20 ) # N - left and N-right sentence characters to extract 
+N=( $1 ) # N - left and N-right sentence characters to extract
 
 for n in "${N[@]}"
 do

@@ -1,7 +1,7 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 
-type=500-bpe-20-context
-languages=$1
+type=$1 #500-bpe-20-context
+languages=$2
 
 batch_size=60
 burn_in_for_n_epochs=10
