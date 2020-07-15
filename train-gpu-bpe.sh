@@ -13,8 +13,6 @@ for lang in ${languages}
 do
 datadir=${lang}-${type}
 
-echo "Sarting training"
-echo ${datadir}
 steps_of_an_epoch=($(wc -l ./data/${datadir}/train-sources))
 #use the first 10 epochs as a burn-in period
 validBurnIn=$((steps_of_an_epoch *${burn_in_for_n_epochs} / ${batch_size}))
@@ -23,9 +21,12 @@ early_stopping_steps=$((steps_of_an_epoch *${patience} / ${batch_size}))
 # validate every epoch
 val_steps=$((steps_of_an_epoch *${val_every_n_epochs}/ ${batch_size}))
 
+echo "Sarting training, steps_of_an_epoch:"
+echo ${steps_of_an_epoch}
 
 onmt_train -data data/${datadir}/data-pp/${datadir}\
   --save_model models/${datadir}/${lang}-${type}\
+  --save_checkpoint_steps ${steps_of_an_epoch}\
   --encoder_type brnn\
   --decoder_type rnn\
   --enc_layers 2\
