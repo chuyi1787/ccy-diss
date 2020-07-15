@@ -24,7 +24,7 @@ early_stopping_steps=$((steps_of_an_epoch *${patience} / ${batch_size}))
 val_steps=$((steps_of_an_epoch *${val_every_n_epochs}/ ${batch_size}))
 
 
-onmt_train -data models/${datadir}/data-pp/${datadir}\
+onmt_train -data data/${datadir}/data-pp/${datadir}\
   --save_model models/${datadir}/${lang}-${type}\
   --encoder_type brnn\
   --decoder_type rnn\
