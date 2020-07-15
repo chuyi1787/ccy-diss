@@ -12,6 +12,7 @@ val_every_n_epochs=1
 for lang in ${languages}
 do
 datadir=${lang}-${type}
+mkdir -p models/${lang}-${type}/
 
 steps_of_an_epoch=($(wc -l ./data/${datadir}/train-sources))
 #use the first 10 epochs as a burn-in period

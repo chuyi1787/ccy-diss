@@ -12,6 +12,7 @@ val_every_n_epochs=1
 for lang in ${languages}
 do
 datadir=${lang}-${type}
+mkdir -p models/${lang}-${type}/
 
 steps_of_an_epoch=($(wc -l ./data/${datadir}/train-sources))
 #use the first 10 epochs as a burn-in period
@@ -27,6 +28,7 @@ echo ${steps_of_an_epoch}
 onmt_train -data data/${datadir}/data-pp/${datadir}\
   --save_model models/${datadir}/${lang}-${type}\
   --save_checkpoint_steps ${steps_of_an_epoch}\
+  --keep_checkpoint 3\
   --encoder_type brnn\
   --decoder_type rnn\
   --enc_layers 2\

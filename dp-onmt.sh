@@ -7,7 +7,8 @@ mkdir -p ./models
 for lang in ${languages}
 do
 echo ${lang}-${type}
-mkdir -p models/${lang}-${type}/data-pp/
+mkdir -p data/${lang}-${type}/data-pp/
+
 
 echo "Starting dp"
 onmt_preprocess \
@@ -17,7 +18,7 @@ onmt_preprocess \
   -valid_tgt data/${lang}-${type}/dev-targets \
   -src_seq_length 75 \
   -tgt_seq_length 75 \
-  -save_data models/${lang}-${type}/data-pp/${lang}-${type}
+  -save_data data/${lang}-${type}/data-pp/${lang}-${type}
 echo "End of dp"
 
 done
