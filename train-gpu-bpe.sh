@@ -45,7 +45,7 @@ onmt_train -data data/${datadir}/data-pp/${datadir}\
   --warmup_steps ${validBurnIn}\
   --train_steps 3000000\
   --report_every ${steps_of_an_epoch} \
-  --gpu_ranks 0 >> train-gpu.log &
+  --gpu_ranks 0 >> models/${datadir}/train-gpu.log &
 echo "End of training"
 
 
