@@ -8,13 +8,18 @@ lang = sys.argv[2]  #English ##source language type
 ftype = sys.argv[3]  #e.g., dev  ## wich text
 merge_N = int(sys.argv[4]) #500
 context_N = int(sys.argv[5]) #N-char context
+try:
+    MAX_token_Nk = int(sys.argv[6])
+except:
+    MAX_token_Nk = 9999
 
-# fname = "selectedUDT-v2.1/UD_English/dev"
-# lang = "English"
-# ftype = "dev"
+
+# lang = "Spanish"
+# fname = "selectedUDT-v2.1/UD_{}/train".format(lang)
+# ftype = "train"
 # merge_N = 500  # vocabulary size
 # context_N = 20
-
+# MAX_token_Nk = 10
 
 
 L_BPEmb = ""
@@ -162,9 +167,26 @@ if __name__ == '__main__':
             pass
 
     data = []
+    surface_form_list = []
+
+    # for Nk central words
     for surface_form, lemmas in surface_form2lemma.items():
+        if surface_form not in surface_form_list:
+            if len(surface_form_list) < (MAX_token_Nk * 1000):
+                surface_form_list.append(surface_form)
+            else:
+                continue
         for sentence, lemma in surface_form2sent[surface_form]:
-           data.append((sentence, surface_form, lemma))
+            data.append((sentence, surface_form, lemma))
+
+
+    # for FULL
+    # for surface_form, lemmas in surface_form2lemma.items():
+    #     if surface_form not in surface_form_list:
+    #        surface_form_list.append(surface_form)
+    #     for sentence, lemma in surface_form2sent[surface_form]:
+    #        data.append((sentence, surface_form, lemma))
+
 
     if emtype == "bpemb":
         encoder = bpemb.BPEmb(lang=L_BPEmb, vs=merge_N)
