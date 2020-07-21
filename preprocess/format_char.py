@@ -10,6 +10,14 @@ try:
 except:
     n = 20
 
+try:
+    MAX_token_Nk = int(sys.argv[5])
+except:
+    MAX_token_Nk = 9999
+
+
+
+
 WBEGIN = '<w>'
 WEND = '</w>'
 
@@ -62,9 +70,19 @@ for line in data:
         pass
 
 data = []
+surface_form_list = []
 for surface_form, lemmas in surface_form2lemma.items():
+    if surface_form not in surface_form_list:
+        if len(surface_form_list) < (MAX_token_Nk * 1000):
+            surface_form_list.append(surface_form)
+        else:
+            continue
     for sentence, lemma in surface_form2sent[surface_form]:
-       data.append((sentence, surface_form, lemma)) 
+        data.append((sentence, surface_form, lemma))
+
+# for surface_form, lemmas in surface_form2lemma.items():
+#     for sentence, lemma in surface_form2sent[surface_form]:
+#        data.append((sentence, surface_form, lemma))
 
 write_data_to_files(data, "{}".format(ftype))
 
