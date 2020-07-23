@@ -14,13 +14,14 @@ do
 datadir=${lang}-${type}
 mkdir -p models/${lang}-${type}/
 
-steps_of_an_epoch=($(wc -l ./data/${datadir}/train-sources))
+steps_of_an_epoch=($(wc -l ./data/${datadir}/train-sources)/${batch_size})
+
 #use the first 10 epochs as a burn-in period
-validBurnIn=$((steps_of_an_epoch *${burn_in_for_n_epochs} / ${batch_size}))
+validBurnIn=$((steps_of_an_epoch *${burn_in_for_n_epochs}))
 # early stopping with patience 10
-early_stopping_steps=$((steps_of_an_epoch *${patience} / ${batch_size}))
+early_stopping_steps=$((steps_of_an_epoch *${patience}))
 # validate every epoch
-val_steps=$((steps_of_an_epoch *${val_every_n_epochs}/ ${batch_size}))
+val_steps=$((steps_of_an_epoch *${val_every_n_epochs}))
 
 echo "Sarting training, steps_of_an_epoch:"
 echo ${steps_of_an_epoch}
