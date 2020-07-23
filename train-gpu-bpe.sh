@@ -14,21 +14,20 @@ do
 datadir=${lang}-${type}
 mkdir -p models/${lang}-${type}/
 
-steps_of_an_epoch=($(wc -l ./data/${datadir}/train-sources)/${batch_size})
-
+steps_of_an_epoch=($(wc -l ./data/${datadir}/train-sources))
 #use the first 10 epochs as a burn-in period
-validBurnIn=$((steps_of_an_epoch *${burn_in_for_n_epochs}))
+validBurnIn=$((steps_of_an_epoch *${burn_in_for_n_epochs} / ${batch_size}))
 # early stopping with patience 10
-early_stopping_steps=$((steps_of_an_epoch *${patience}))
+early_stopping_steps=$((steps_of_an_epoch *${patience} / ${batch_size}))
 # validate every epoch
-val_steps=$((steps_of_an_epoch *${val_every_n_epochs}))
+val_steps=$((steps_of_an_epoch *${val_every_n_epochs}/ ${batch_size}))
 
 echo "Sarting training, steps_of_an_epoch:"
-echo ${steps_of_an_epoch}
+echo ${val_steps}
 
 onmt_train -data data/${datadir}/data-pp/${datadir}\
   --save_model models/${datadir}/${lang}-${type}\
-  --save_checkpoint_steps ${steps_of_an_epoch}\
+  --save_checkpoint_steps ${val_steps}\
   --keep_checkpoint 3\
   --encoder_type brnn\
   --decoder_type rnn\
@@ -46,7 +45,7 @@ onmt_train -data data/${datadir}/data-pp/${datadir}\
   --warmup_steps ${validBurnIn}\
   --train_steps 3000000\
   --report_every ${steps_of_an_epoch} \
-  --gpu_ranks 0 >> models/${datadir}/train-gpu.log &
+  --gpu_ranks 0 2>&1 | tee models/${datadir}/train-log-${lang}-${type}.txt
 echo "End of training"
 
 
