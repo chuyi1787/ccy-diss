@@ -1,11 +1,6 @@
 import sys
-languages = sys.argv[1]  # "Turkish"
-type = sys.argv[2]  #"20-char-context"
-model_n = sys.argv[3]
-
-name = "{}-{}".format(languages,type)
-reference = "data/{}/test-targets".format(name)
-prediction = "models/{}/{}_step_{}_pred.txt".format(name, name, model_n)
+reference = sys.argv[1]
+prediction = sys.argv[2]
 
 ref = open(reference, "r").read().split("\n")
 pred = open(prediction, "r").read().split("\n")
