@@ -27,7 +27,7 @@ echo ${val_steps}
 
 onmt_train -data data/${datadir}/data-pp/${datadir}\
   --save_model models/${datadir}/${lang}-${type}\
-  --save_checkpoint_steps ${val_steps}\
+  --save_checkpoint_steps ${steps_of_an_epoch}\
   --keep_checkpoint 3\
   --encoder_type brnn\
   --decoder_type rnn\

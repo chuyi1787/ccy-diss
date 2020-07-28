@@ -1,7 +1,8 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 
-type=20-char-context # bpe
-languages=$1
+char_n=$1
+type=${char_n}-char-context
+languages=$2
 
 batch_size=60
 burn_in_for_n_epochs=10
@@ -28,6 +29,7 @@ echo ${steps_of_an_epoch}
 onmt_train -data data/${datadir}/data-pp/${datadir}\
   --save_model models/${datadir}/${lang}-${type}\
   --save_checkpoint_steps ${steps_of_an_epoch}\
+  --keep_checkpoint 3\
   --encoder_type brnn\
   --decoder_type rnn\
   --enc_layers 2\
@@ -43,8 +45,8 @@ onmt_train -data data/${datadir}/data-pp/${datadir}\
   --valid_steps ${val_steps}\
   --warmup_steps ${validBurnIn}\
   --train_steps 3000000\
-  --report_every ${steps_of_an_epoch} \
-  --gpu_ranks 0 &> train-gpu.log &
+  --report_every ${val_steps} \
+  --gpu_ranks 0 2>&1 | tee models/${datadir}/train-gpu.txt
 echo "End of training"
 
 
