@@ -8,11 +8,13 @@ languages="English Arabic Turkish Spanish" # list of languages to process
 
 mkdir -p ../data
 
+
+
 for n in "${N[@]}"
 do
     for lang in ${languages}
     do
-        targetDir=../data/${lang}-${N}-char-context-10k
+        targetDir=../data/${lang}-${N}-char-context-${MAX_token_Nk}k
         mkdir -p ${targetDir}
 
         python3 format_char.py $UD_directory/UD_${lang}/dev ${lang} dev ${n} ${MAX_token_Nk}
