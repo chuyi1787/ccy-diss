@@ -1,7 +1,6 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 
-char_n=$1
-type=${char_n}-char-context
+type=$1 #25-char-context-10k
 languages=$2
 
 batch_size=60
@@ -24,7 +23,7 @@ early_stopping_steps=$((steps_of_an_epoch *${patience} / ${batch_size}))
 val_steps=$((steps_of_an_epoch *${val_every_n_epochs}/ ${batch_size}))
 
 echo "Sarting training, steps_of_an_epoch:"
-echo ${steps_of_an_epoch}
+echo ${val_steps}
 
 onmt_train -data data/${datadir}/data-pp/${datadir}\
   --save_model models/${datadir}/${lang}-${type}\
@@ -48,18 +47,6 @@ onmt_train -data data/${datadir}/data-pp/${datadir}\
   --report_every ${val_steps} \
   --gpu_ranks 0 2>&1 | tee models/${datadir}/train-gpu.txt
 echo "End of training"
-
-
-#echo "Lemmatizing test set"
-#onmt_translate \
-#  --model demo-model_XYZ.pt\
-#  --src data/src-test.txt\
-#  --output pred.txt\
-#  --replace_unk\
-#  --beam_size 12\
-#  --verbose
-#echo "Done"
-
 
 
 done

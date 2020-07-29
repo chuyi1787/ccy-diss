@@ -11,4 +11,5 @@ for line in pred:
     if ref[i] == line:
         j += 1
     i+=1
-print(float(j)/i)
+acc = (float(j)/i)*100
+print("%.4f" % acc )
