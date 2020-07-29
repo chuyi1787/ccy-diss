@@ -2,6 +2,13 @@
 import sys
 from collections import defaultdict
 
+
+# fname = "selectedUDT-v2.1/UD_English/train"
+# lang = "English"
+# ftype = "train"
+# n = 20
+# MAX_token_Nk = 10
+
 fname = sys.argv[1]
 lang = sys.argv[2]
 ftype = sys.argv[3]
@@ -14,8 +21,6 @@ try:
     MAX_token_Nk = int(sys.argv[5])
 except:
     MAX_token_Nk = 9999
-
-
 
 
 WBEGIN = '<w>'
