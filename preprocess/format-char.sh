@@ -14,13 +14,13 @@ do
         targetDir=../data/${lang}-${N}-char-context
         mkdir -p ${targetDir}
 
-        python3 format_char.py $UD_directory/UD_${lang}/dev ${lang} dev ${n}
+        python3 format-char.py $UD_directory/UD_${lang}/dev ${lang} dev ${n}
         mv dev-* ${targetDir}/.
 
-        python3 format_char.py $UD_directory/UD_${lang}/train ${lang} train ${n}
+        python3 format-char.py $UD_directory/UD_${lang}/train ${lang} train ${n}
         mv train-* ${targetDir}/.
 
-        python3 format_char.py $UD_directory/UD_${lang}/test ${lang} test ${n}
+        python3 format-char.py $UD_directory/UD_${lang}/test ${lang} test ${n}
         mv test-* ${targetDir}/.
     done
 done

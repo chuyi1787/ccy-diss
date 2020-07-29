@@ -17,13 +17,13 @@ do
         targetDir=../data/${lang}-${N}-char-context-${MAX_token_Nk}k
         mkdir -p ${targetDir}
 
-        python3 format_char.py $UD_directory/UD_${lang}/dev ${lang} dev ${n} ${MAX_token_Nk}
+        python3 format-char.py $UD_directory/UD_${lang}/dev ${lang} dev ${n} ${MAX_token_Nk}
         mv dev-* ${targetDir}/.
 
-        python3 format_char.py $UD_directory/UD_${lang}/train ${lang} train ${n} ${MAX_token_Nk}
+        python3 format-char.py $UD_directory/UD_${lang}/train ${lang} train ${n} ${MAX_token_Nk}
         mv train-* ${targetDir}/.
 
-        python3 format_char.py $UD_directory/UD_${lang}/test ${lang} test ${n} ${MAX_token_Nk}
+        python3 format-char.py $UD_directory/UD_${lang}/test ${lang} test ${n} ${MAX_token_Nk}
         mv test-* ${targetDir}/.
     done
 done
