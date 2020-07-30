@@ -9,9 +9,9 @@ ftype = sys.argv[3]  #e.g., dev  ## wich text
 merge_N = int(sys.argv[4]) #500
 context_N = int(sys.argv[5]) #N-char context
 try:
-    MAX_token_Nk = int(sys.argv[6])
+    MAX_type_Nk = int(sys.argv[6])
 except:
-    MAX_token_Nk = 9999
+    MAX_type_Nk = 9999
 
 
 # lang = "Spanish"
