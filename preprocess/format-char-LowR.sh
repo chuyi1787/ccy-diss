@@ -19,12 +19,12 @@ do
         mkdir -p ${targetDir}
 
         python3 format-char.py $UD_directory/UD_${lang}/dev ${lang} dev ${n} ${dev_token_Nk}
-        mv dev-* ${targetDir}/.
+        mv dev-* ${targetDir}
 
         python3 format-char.py $UD_directory/UD_${lang}/train ${lang} train ${n} ${train_token_Nk}
-        mv train-* ${targetDir}/.
+        mv train-* ${targetDir}
 
         python3 format-char.py $UD_directory/UD_${lang}/test ${lang} test ${n}
-        mv test-* ${targetDir}/.
+        mv test-* ${targetDir}
     done
 done

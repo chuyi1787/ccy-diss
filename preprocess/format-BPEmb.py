@@ -4,6 +4,8 @@ import bpemb
 import re
 import random
 
+flag=0
+
 fname = sys.argv[1]  #e.g., selectedUDT-v2.1/UD_English/dev or test or train
 lang = sys.argv[2]  #English ##source language type
 ftype = sys.argv[3]  #e.g., dev  ## wich text
@@ -13,6 +15,8 @@ try:
     nk_tokens = int(sys.argv[6])
 except:
     nk_tokens = 9999
+    flag=1
+
 
 
 # lang = "English"
@@ -139,6 +143,7 @@ if __name__ == '__main__':
     total_examples = range(len(data))
     selected_dno = random.sample(total_examples, m)
 
+
     for i, line in enumerate(data):
         try:
             lc = line.split("\t")
@@ -150,9 +155,13 @@ if __name__ == '__main__':
                 continue
             if any([True if d in lemma else False for d in "0987654321-/"]):
                 continue
-            if i in selected_dno:
+            if flag:
                 surface_form2lemma[surface_form].append(lemma)
                 surface_form2sent[surface_form].append((sentence, lemma))
+            else:
+                if i in selected_dno:
+                    surface_form2lemma[surface_form].append(lemma)
+                    surface_form2sent[surface_form].append((sentence, lemma))
         except:
             pass
 

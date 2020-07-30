@@ -9,6 +9,8 @@ import random
 # n = 20
 # nk_tokens = 10
 
+flag=0
+
 fname = sys.argv[1]
 lang = sys.argv[2]
 ftype = sys.argv[3]
@@ -21,6 +23,7 @@ try:
     nk_tokens = int(sys.argv[5])
 except:
     nk_tokens = 9999
+    flag = 1
 
 
 WBEGIN = '<w>'
@@ -75,9 +78,14 @@ if __name__ == '__main__':
                 continue
             if any([True if d in lemma else False for d in "0987654321-/"]):
                 continue
-            if i in selected_dno:
+
+            if flag:
                 surface_form2lemma[surface_form].append(lemma)
                 surface_form2sent[surface_form].append((sentence, lemma))
+            else:
+                if i in selected_dno:
+                    surface_form2lemma[surface_form].append(lemma)
+                    surface_form2sent[surface_form].append((sentence, lemma))
         except:
             pass
 
