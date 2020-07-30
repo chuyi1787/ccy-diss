@@ -8,11 +8,11 @@ UD_directory=selectedUDT-v2.1 # origianl data sources
 languages="English Arabic Turkish Spanish" # list of languages to process
 
 
-mkdir -p ../data
+mkdir -p ../data-lowresource
 
 for lang in ${languages}
 do
-    targetDir=../data/${lang}-${merge_N}-BPEmb-${n_context}-context-${MAX_token_Nk}k
+    targetDir=../data-lowresource/${lang}-${merge_N}-BPEmb-${n_context}-context-${MAX_token_Nk}k
     mkdir -p ${targetDir}
 
     python3 format-BPEmb.py $UD_directory/UD_${lang}/dev ${lang} dev ${merge_N} ${n_context} ${MAX_token_Nk}

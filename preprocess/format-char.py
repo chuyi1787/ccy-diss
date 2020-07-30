@@ -1,13 +1,13 @@
 #Author: Toms Bergmanis toms.bergmanis@gmail.com
 import sys
 from collections import defaultdict
-
+import random
 
 # fname = "selectedUDT-v2.1/UD_English/train"
 # lang = "English"
 # ftype = "train"
 # n = 20
-# MAX_token_Nk = 10
+# nk_tokens = 10
 
 fname = sys.argv[1]
 lang = sys.argv[2]
@@ -18,9 +18,9 @@ except:
     n = 20
 
 try:
-    MAX_token_Nk = int(sys.argv[5])
+    nk_tokens = int(sys.argv[5])
 except:
-    MAX_token_Nk = 9999
+    nk_tokens = 9999
 
 
 WBEGIN = '<w>'
@@ -53,41 +53,39 @@ def trim_input(inp, n, surface_form):
     else:
         return "{} {} {} {} {}".format( LC, surface_form, RC)
 
-data = readFile(fname)
 
-surface_form2lemma = defaultdict(list)
-surface_form2sent = defaultdict(list)
+if __name__ == '__main__':
+    data = readFile(fname)
 
-for line in data:
-    try:
-        lc =  line.split("\t")
-        surface_form = lc[0]
-        lemma = lc[1]
-        POS = lc[2]
-        sentence = lc[3]
-        if lemma == "": 
-            continue
-        if any([True if d in lemma else False for d in "0987654321-/"]):
-            continue
-        surface_form2lemma[surface_form].append(lemma)
-        surface_form2sent[surface_form].append((sentence, lemma))
-    except:
-        pass
+    surface_form2lemma = defaultdict(list)
+    surface_form2sent = defaultdict(list)
 
-data = []
-surface_form_list = []
-for surface_form, lemmas in surface_form2lemma.items():
-    if surface_form not in surface_form_list:
-        if len(surface_form_list) < (MAX_token_Nk * 1000):
-            surface_form_list.append(surface_form)
-        else:
-            continue
-    for sentence, lemma in surface_form2sent[surface_form]:
-        data.append((sentence, surface_form, lemma))
+    m = nk_tokens * 1000
+    total_examples = range(len(data))
+    selected_dno = random.sample(total_examples, m)
 
-# for surface_form, lemmas in surface_form2lemma.items():
-#     for sentence, lemma in surface_form2sent[surface_form]:
-#        data.append((sentence, surface_form, lemma))
+    for i, line in enumerate(data):
+        try:
+            lc = line.split("\t")
+            surface_form = lc[0]
+            lemma = lc[1]
+            POS = lc[2]
+            sentence = lc[3]
+            if lemma == "":
+                continue
+            if any([True if d in lemma else False for d in "0987654321-/"]):
+                continue
+            if i in selected_dno:
+                surface_form2lemma[surface_form].append(lemma)
+                surface_form2sent[surface_form].append((sentence, lemma))
+        except:
+            pass
 
-write_data_to_files(data, "{}".format(ftype))
+    data = []
+    surface_form_list = []
+    for surface_form, lemmas in surface_form2lemma.items():
+        for sentence, lemma in surface_form2sent[surface_form]:
+           data.append((sentence, surface_form, lemma))
+
+    write_data_to_files(data, "{}".format(ftype))
 
