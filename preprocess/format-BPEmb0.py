@@ -2,25 +2,24 @@ import sys
 from collections import defaultdict
 import bpemb
 import re
-import random
 
-# fname = sys.argv[1]  #e.g., selectedUDT-v2.1/UD_English/dev or test or train
-# lang = sys.argv[2]  #English ##source language type
-# ftype = sys.argv[3]  #e.g., dev  ## wich text
-# merge_N = int(sys.argv[4]) #500
-# context_N = int(sys.argv[5]) #N-char context
-# try:
-#     nk_tokens = int(sys.argv[6])
-# except:
-#     nk_tokens = 9999
+fname = sys.argv[1]  #e.g., selectedUDT-v2.1/UD_English/dev or test or train
+lang = sys.argv[2]  #English ##source language type
+ftype = sys.argv[3]  #e.g., dev  ## wich text
+merge_N = int(sys.argv[4]) #500
+context_N = int(sys.argv[5]) #N-char context
+try:
+    MAX_type_Nk = int(sys.argv[6])
+except:
+    MAX_type_Nk = 9999
 
 
-lang = "English"
-fname = "selectedUDT-v2.1/UD_{}/train".format(lang)
-ftype = "train"
-merge_N = 500  # vocabulary size
-context_N = 20
-nk_tokens = 10
+# lang = "Spanish"
+# fname = "selectedUDT-v2.1/UD_{}/train".format(lang)
+# ftype = "train"
+# merge_N = 500  # vocabulary size
+# context_N = 20
+# MAX_token_Nk = 10
 
 
 L_BPEmb = ""
@@ -36,6 +35,10 @@ else:
     print("language type error!!!!!!!!")
 
 
+
+
+
+emtype = "bpemb" #char bpe
 
 WBEGIN = '<w>'
 WEND = '</w>'
@@ -73,6 +76,12 @@ def write_data_to_files_bpe(data, fName, encoder):
                 lc_out = encoder.encode(" ".join(w for w in w_list))
                 lc_out = " ".join(x for x in lc_out)
                 lc_out = lc_out.replace("▁", "< ").replace("<", "<s>")
+                #lc_out = lc_out.replace("_eow", "<s>").replace("_<s>", "<s>")
+                # lc_out = []
+                # for w in w_list:
+                #     lc = encoder.tokenize(w)
+                #     lc_out.append(item for item in lc.split())
+                # lc_out = '<s>'.join(x for x in lc_out)
 
                 rc = cs[1].split(" ")
                 rc = " ".join(rc[:min(context_N, len(rc))])
@@ -80,10 +89,13 @@ def write_data_to_files_bpe(data, fName, encoder):
                 rc_out = encoder.encode(" ".join(w for w in w_list))
                 rc_out = " ".join(x for x in rc_out)
                 rc_out = rc_out.replace("▁", "< ").replace("<", "<s>")
-
-                surface_form = encoder.encode(surface_form)
-                surface_form = " ".join(x for x in surface_form)
-                surface_form = surface_form.replace("▁", "")
+                #rc_out = rc_out.replace("_eow", "<s>").replace("_<s>", "<s>")
+                # rc_out = []
+                # for w in w_list:
+                #     rc = encoder.tokenize(w)
+                #     rc_out.append(item for item in rc.split())
+                # rc_out = '<s>'.join(x for x in rc_out)
+                surface_form = " ".join(re.compile('.{1}').findall(surface_form))
 
                 a = "{} {} {} {} {} {} {}\n".format(WBEGIN, lc_out, LC, surface_form, RC, rc_out, WEND)
                 s.write(a)
@@ -138,11 +150,7 @@ if __name__ == '__main__':
     surface_form2lemma = defaultdict(list)
     surface_form2sent = defaultdict(list)
 
-    m = nk_tokens * 1000
-    total_examples = range(len(data))
-    selected_dno = random.sample(total_examples, m)
-
-    for i, line in enumerate(data):
+    for line in data:
         try:
             lc = line.split("\t")
             surface_form = lc[0]
@@ -153,22 +161,36 @@ if __name__ == '__main__':
                 continue
             if any([True if d in lemma else False for d in "0987654321-/"]):
                 continue
-            if i in selected_dno:
-                surface_form2lemma[surface_form].append(lemma)
-                surface_form2sent[surface_form].append((sentence, lemma))
+            surface_form2lemma[surface_form].append(lemma)
+            surface_form2sent[surface_form].append((sentence, lemma))
         except:
             pass
 
     data = []
     surface_form_list = []
 
+    # for Nk central words
     for surface_form, lemmas in surface_form2lemma.items():
         if surface_form not in surface_form_list:
-            surface_form_list.append(surface_form)
+            if len(surface_form_list) < (MAX_token_Nk * 1000):
+                surface_form_list.append(surface_form)
+            else:
+                continue
         for sentence, lemma in surface_form2sent[surface_form]:
             data.append((sentence, surface_form, lemma))
 
 
-    encoder = bpemb.BPEmb(lang=L_BPEmb, vs=merge_N)
-    write_data_to_files_bpe(data, "{}".format(ftype), encoder)
+    # for FULL
+    # for surface_form, lemmas in surface_form2lemma.items():
+    #     if surface_form not in surface_form_list:
+    #        surface_form_list.append(surface_form)
+    #     for sentence, lemma in surface_form2sent[surface_form]:
+    #        data.append((sentence, surface_form, lemma))
+
+
+    if emtype == "bpemb":
+        encoder = bpemb.BPEmb(lang=L_BPEmb, vs=merge_N)
+        write_data_to_files_bpe(data, "{}".format(ftype), encoder)
+    else:  # cha
+        write_data_to_files(data, "{}".format(ftype))
 
