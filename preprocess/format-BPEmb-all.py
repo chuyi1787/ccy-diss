@@ -4,23 +4,23 @@ import bpemb
 import re
 import random
 
-# fname = sys.argv[1]  #e.g., selectedUDT-v2.1/UD_English/dev or test or train
-# lang = sys.argv[2]  #English ##source language type
-# ftype = sys.argv[3]  #e.g., dev  ## wich text
-# merge_N = int(sys.argv[4]) #500
-# context_N = int(sys.argv[5]) #N-char context
-# try:
-#     nk_tokens = int(sys.argv[6])
-# except:
-#     nk_tokens = 9999
+fname = sys.argv[1]  #e.g., selectedUDT-v2.1/UD_English/dev or test or train
+lang = sys.argv[2]  #English ##source language type
+ftype = sys.argv[3]  #e.g., dev  ## wich text
+merge_N = int(sys.argv[4]) #500
+context_N = int(sys.argv[5]) #N-char context
+try:
+    nk_tokens = int(sys.argv[6])
+except:
+    nk_tokens = 9999
 
 
-lang = "English"
-fname = "selectedUDT-v2.1/UD_{}/train".format(lang)
-ftype = "train"
-merge_N = 500  # vocabulary size
-context_N = 20
-nk_tokens = 10
+# lang = "English"
+# fname = "selectedUDT-v2.1/UD_{}/train".format(lang)
+# ftype = "train"
+# merge_N = 500  # vocabulary size
+# context_N = 20
+# nk_tokens = 10
 
 
 L_BPEmb = ""
