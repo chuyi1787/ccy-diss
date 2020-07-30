@@ -138,10 +138,12 @@ if __name__ == '__main__':
     data = readFile(fname)
     surface_form2lemma = defaultdict(list)
     surface_form2sent = defaultdict(list)
+    selected_dno = []
 
-    m = nk_tokens * 1000
-    total_examples = range(len(data))
-    selected_dno = random.sample(total_examples, m)
+    if flag == 0:
+        m = nk_tokens * 1000
+        total_examples = range(len(data))
+        selected_dno = random.sample(total_examples, m)
 
 
     for i, line in enumerate(data):

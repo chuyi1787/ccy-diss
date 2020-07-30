@@ -3,6 +3,7 @@ import sys
 from collections import defaultdict
 import random
 
+# flag=0
 # fname = "selectedUDT-v2.1/UD_English/train"
 # lang = "English"
 # ftype = "train"
@@ -10,7 +11,6 @@ import random
 # nk_tokens = 10
 
 flag=0
-
 fname = sys.argv[1]
 lang = sys.argv[2]
 ftype = sys.argv[3]
@@ -62,10 +62,12 @@ if __name__ == '__main__':
 
     surface_form2lemma = defaultdict(list)
     surface_form2sent = defaultdict(list)
+    selected_dno = []
 
-    m = nk_tokens * 1000
-    total_examples = range(len(data))
-    selected_dno = random.sample(total_examples, m)
+    if flag==0:
+        m = nk_tokens * 1000
+        total_examples = range(len(data))
+        selected_dno = random.sample(total_examples, m)
 
     for i, line in enumerate(data):
         try:
