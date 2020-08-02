@@ -39,8 +39,6 @@ elif lang=="Arabic":
 else:
     print("language type error!!!!!!!!")
 
-
-
 WBEGIN = '<w>'
 WEND = '</w>'
 
@@ -57,15 +55,6 @@ def readFile(fname):
 
 # input is list of tuples: [(sentence, surface_form, lemma)]
 # output is source and target file
-def write_data_to_files(data, fName):
-    with open(fName + '-sources', "w") as s:
-        with open(fName + '-targets', "w") as t:
-            for context, surface_form, lemma, in data:
-                a = trim_input(context, context_N, " ".join([l for l in surface_form]))
-                s.write("{} {} {}\n".format(WBEGIN, trim_input(context, context_N, " ".join([l for l in surface_form])), WEND))
-                t.write("{} {} {}\n".format(WBEGIN, " ".join([l for l in lemma]), WEND))
-
-
 def write_data_to_files_bpe(data, fName, encoder):
     with open(fName + '-sources', "w") as s:
         with open(fName + '-targets', "w") as t:
@@ -90,20 +79,6 @@ def write_data_to_files_bpe(data, fName, encoder):
                 s.write(a)
                 # write {}-tragets doc
                 t.write("{} {} {}\n".format(WBEGIN, " ".join([l for l in lemma]), WEND))
-
-
-# inp example: '<SURFACE_FORM> <s> t h e <s> A P <s> c o m e s <s> t h i s <s> s t o r y'
-# output example: ' <lc> F r o m <rc>  <s> t h e <s> A P <s> c o m e s <s> t h i s <s>'
-def trim_input(inp, n, surface_form):
-    if n > 0:
-        cs = inp.split("<SURFACE_FORM>")
-        lc = cs[0].split(" ")
-        lc = " ".join(lc[-min(n, len(lc)):])
-        rc = cs[1].split(" ")
-        rc = " ".join(rc[:min(n, len(rc))])
-        return "{} {} {} {} {}".format(lc, LC, surface_form, RC, rc)
-    else:
-        return "{} {} {} {} {}".format( LC, surface_form, RC)
 
 
 def chas2w(sent):
@@ -145,7 +120,6 @@ if __name__ == '__main__':
         total_examples = range(len(data))
         selected_dno = random.sample(total_examples, m)
 
-
     for i, line in enumerate(data):
         try:
             lc = line.split("\t")
@@ -174,7 +148,6 @@ if __name__ == '__main__':
            surface_form_list.append(surface_form)
         for sentence, lemma in surface_form2sent[surface_form]:
            data.append((sentence, surface_form, lemma))
-
 
     encoder = bpemb.BPEmb(lang=L_BPEmb, vs=merge_N)
     write_data_to_files_bpe(data, "{}".format(ftype), encoder)
