@@ -8,7 +8,7 @@ i = 0
 j = 0
 for line in pred:
     line = line.strip()
-    if ref[i] == line:
+    if ref[i].lower() == line.lower():
         j += 1
     i+=1
 acc = (float(j)/i)*100
