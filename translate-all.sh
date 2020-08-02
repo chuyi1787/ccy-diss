@@ -1,6 +1,5 @@
-#!bin/sh
-
-models=$1 # models / models-10k/ models-char
+models=$1 # models-lR / models-bpe/ models-char
+datatype=$2 # data-bpeall
 
 for dir in ${models}/*  #dir -  the dir name under models/
 do
@@ -9,8 +8,9 @@ do
   model=$(find $dir -type f -name '*.pt')
 
   # get corresponding dev-source, dev-target
-  datadir=data/${dir##*/}
+  datadir=${datatype}/${dir##*/}
 
+  rm ${dir}/dev_pred.txt
   echo "Begin translate by model: "${model}
   onmt_translate \
   --model ${model}\
