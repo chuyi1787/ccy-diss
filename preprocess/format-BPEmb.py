@@ -4,8 +4,8 @@ import bpemb
 import re
 import random
 
-flag=0
-
+# flag=0
+#
 fname = sys.argv[1]  #e.g., selectedUDT-v2.1/UD_English/dev or test or train
 lang = sys.argv[2]  #English ##source language type
 ftype = sys.argv[3]  #e.g., dev  ## wich text
@@ -15,7 +15,7 @@ try:
     nk_tokens = int(sys.argv[6])
 except:
     nk_tokens = 9999
-    flag=1
+    # flag=1
 
 
 
@@ -41,7 +41,6 @@ else:
 
 WBEGIN = '<w>'
 WEND = '</w>'
-
 LC = '<lc>'
 RC = '<rc>'
 
@@ -93,33 +92,18 @@ def chas2w(sent):
     return w_list
 
 
-# prepare corpus for fit bpe
-def bpe_cp_pp(sent, corpus_for_bpe, direct='b'):
-    sent = re.split("<w>|</w>|<s>|<lc>|<rc>", sent)
-    sent_ctn = ['<w>']
-    for w in sent:
-        w = w.strip()
-        if len(w) == 0:
-            continue
-        w = ''.join(c for c in w.split())
-        sent_ctn.append(w)
-    sent_ctn = ' '.join(w for w in sent_ctn)
-    sent_ctn += ' </w>'
-    corpus_for_bpe.append(sent_ctn)
-    return corpus_for_bpe
-
-
 if __name__ == '__main__':
     data = readFile(fname)
     surface_form2lemma = defaultdict(list)
     surface_form2sent = defaultdict(list)
-    selected_dno = []
+    # selected_dno = []
 
-    if flag == 0:
-        m = nk_tokens * 1000
-        total_examples = range(len(data))
-        selected_dno = random.sample(total_examples, m)
+    # if flag == 0:
+    #     m = nk_tokens * 1000
+    #     total_examples = range(len(data))
+    #     selected_dno = random.sample(total_examples, m)
 
+    count = 0
     for i, line in enumerate(data):
         try:
             lc = line.split("\t")
@@ -127,17 +111,27 @@ if __name__ == '__main__':
             lemma = lc[1]
             POS = lc[2]
             sentence = lc[3]
+            # omit examples with empty lemma
             if lemma == "":
                 continue
+            # omit examples whose lemma contain "0987654321-/"
             if any([True if d in lemma else False for d in "0987654321-/"]):
                 continue
-            if flag:
+
+            if count < (nk_tokens*1000):
                 surface_form2lemma[surface_form].append(lemma)
                 surface_form2sent[surface_form].append((sentence, lemma))
+                count += 1
             else:
-                if i in selected_dno:
-                    surface_form2lemma[surface_form].append(lemma)
-                    surface_form2sent[surface_form].append((sentence, lemma))
+                break
+
+            # if flag:
+            #     surface_form2lemma[surface_form].append(lemma)
+            #     surface_form2sent[surface_form].append((sentence, lemma))
+            # else:
+            #     if i in selected_dno:
+            #         surface_form2lemma[surface_form].append(lemma)
+            #         surface_form2sent[surface_form].append((sentence, lemma))
         except:
             pass
 

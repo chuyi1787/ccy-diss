@@ -6,21 +6,18 @@ n_context=$2 #20
 UD_directory=selectedUDT-v2.1 # origianl data sources
 languages="English Arabic Turkish Spanish" # list of languages to process
 
-
-mkdir -p ../data-bpeall
-
 for lang in ${languages}
 do
-    targetDir=../data-bpeall/${lang}-${merge_N}-BPEmb-all-${n_context}-context
+    targetDir=../data-lite/${lang}-${merge_N}-BPEmb-all-${n_context}-context-lite
     mkdir -p ${targetDir}
 
-    python3 format-BPEmb-all.py $UD_directory/UD_${lang}/dev ${lang} dev ${merge_N} ${n_context} ${MAX_token_Nk}
-    mv dev-* ${targetDir}/.
-
-    python3 format-BPEmb-all.py $UD_directory/UD_${lang}/train ${lang} train ${merge_N} ${n_context} ${MAX_token_Nk}
+    python3 format-BPEmb-all.py $UD_directory/UD_${lang}/train ${lang} train ${merge_N} ${n_context} 10
     mv train-* ${targetDir}/.
 
-    python3 format-BPEmb-all.py $UD_directory/UD_${lang}/test ${lang} test ${merge_N} ${n_context} ${MAX_token_Nk}
+    python3 format-BPEmb-all.py $UD_directory/UD_${lang}/dev ${lang} dev ${merge_N} ${n_context} 3
+    mv dev-* ${targetDir}/.
+
+    python3 format-BPEmb-all.py $UD_directory/UD_${lang}/test ${lang} test ${merge_N} ${n_context}
     mv test-* ${targetDir}/.
 done
 
