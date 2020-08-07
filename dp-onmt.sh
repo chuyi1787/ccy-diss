@@ -1,6 +1,6 @@
 #!/bin/bash
 
-type=$1 #500-BPEmb-20-context char-20-context trigram-15-context
+type=$1 #500-BPEmb-20-context char-20-context(-lite) trigram-15-context
 mode=$2 #"lite"
 datadir=data-${mode}
 echo $datadir
