@@ -1,8 +1,8 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 
-modelDir="models-lite"
-type=$1 #500-BPEmb-20-context-lite
-languages=$2
+modelDir=$1 #"models-lite"
+type=$2 #500-BPEmb-20-context-lite
+languages=$3
 
 
 batch_size=60
@@ -32,8 +32,7 @@ echo ${validBurnIn}
 
 onmt_train -data data-lite/${datadir}/data-pp/${datadir}\
   --save_model ${modelDir}/${datadir}/${lang}-${type}\
-  --save_checkpoint_steps ${steps_of_an_epoch}\
-  --keep_checkpoint 1\
+  --save_checkpoint_steps ${val_steps}\
   --encoder_type brnn\
   --decoder_type rnn\
   --enc_layers 2\

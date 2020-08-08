@@ -32,8 +32,7 @@ echo ${validBurnIn}
 
 onmt_train -data data-full/${datadir}/data-pp/${datadir}\
   --save_model ${modelDir}/${datadir}/${lang}-${type}\
-  --save_checkpoint_steps ${steps_of_an_epoch}\
-  --keep_checkpoint 3\
+  --save_checkpoint_steps ${val_steps}\
   --encoder_type brnn\
   --decoder_type rnn\
   --enc_layers 2\
