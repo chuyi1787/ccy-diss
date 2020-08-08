@@ -1,6 +1,6 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 
-modelDir=$1 #models-bpe/ models-bpeall/ models-char
+modelDir=$1 # given the dictionary name of model, likes models-char, models-bpe/ models-bpeall/ models-char
 type=$2 #500-bpe-20-context
 languages=$3
 

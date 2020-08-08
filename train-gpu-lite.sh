@@ -1,7 +1,7 @@
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 
-modelDir=$1 #"models-lite"
-type=$2 #500-BPEmb-20-context-lite
+modelDir=$1 # given the dictionary name of model, likes "models-char"
+type=$2 #models type, 500-BPEmb-20-context (don't need to add lite)
 languages=$3
 
 
@@ -13,7 +13,7 @@ val_every_n_epochs=1
 
 for lang in ${languages}
 do
-datadir=${lang}-${type}
+datadir=${lang}-${type}-lite
 mkdir -p ${modelDir}/${lang}-${type}/
 
 steps_of_an_epoch=($(wc -l ./data-lite/${datadir}/train-sources))
@@ -31,7 +31,7 @@ echo ${validBurnIn}
 
 
 onmt_train -data data-lite/${datadir}/data-pp/${datadir}\
-  --save_model ${modelDir}/${datadir}/${lang}-${type}\
+  --save_model ${modelDir}/${datadir}/${datadir}\
   --save_checkpoint_steps ${val_steps}\
   --encoder_type brnn\
   --decoder_type rnn\
@@ -50,7 +50,7 @@ onmt_train -data data-lite/${datadir}/data-pp/${datadir}\
   --warmup_steps ${validBurnIn}\
   --train_steps 3000000\
   --report_every ${val_steps} \
-  --gpu_ranks 0 2>&1 | tee ${modelDir}/${datadir}/train-log-${lang}-${type}.txt
+  --gpu_ranks 0 2>&1 | tee ${modelDir}/${datadir}/train-log-${datadir}.txt
 echo "End of training"
 
 

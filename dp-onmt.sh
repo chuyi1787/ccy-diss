@@ -1,8 +1,7 @@
 #!/bin/bash
 
-type=$1 #500-BPEmb-20-context char-20-context(-lite) trigram-15-context
-mode=$2 #"lite"
-datadir=data-${mode}
+type=$1 # type name, containing lite or not:  500-BPEmb-20-context char-20-context(-lite) trigram-15-context
+datadir=$2 #data dictionary name: "data-lite"
 echo $datadir
 languages="English Arabic Turkish Spanish Indonesian"
 
