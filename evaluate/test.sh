@@ -1,5 +1,5 @@
 #type=20-char-context
-type=500-BPEmb-20-context
+type=500-BPEmb-25-context
 #type=500-bpe-20-context
 languages=$1 #"English Arabic Turkish Spanish"
 model_n=$2
